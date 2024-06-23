@@ -11,6 +11,9 @@ let mousePos = null;
 let angle = null;
 let canShoot = true;
 
+
+
+
 //Global Functions
 function drawBorder() {
     ctx.fillStyle = "#666666";
@@ -89,9 +92,9 @@ class CannonBall {
         this.angle = angle;
         this.x = x;
         this.y = y;
-        this.dx = Math.cos(angle) * 20;
-        this.dy = Math.sin(angle) * 20;
-        this.gravity = 0.09;
+        this.dx = Math.cos(angle) * 7;
+        this.dy = Math.sin(angle) * 7;
+        this.gravity = 0.05;
         this.elasticity = 0.5;
         this.friction = 0.008;
         this.collAudio = new Audio("https://archive.org/download/metal-block_202104/metal-block.wav");
