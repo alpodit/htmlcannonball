@@ -1,6 +1,14 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+const gravityInput = document.getElementById('gravity');
+const elasticityInput = document.getElementById('elasticity');
+const frictionInput = document.getElementById('friction');
+const massInput = document.getElementById('mass');
+const cannonPowerInput = document.getElementById('cannon-power');
+const cannonRadiusInput = document.getElementById('cannon-radius');
+const clearButton = document.getElementById('clear');
+
 let cannonSfx = new Audio("https://ia601404.us.archive.org/24/items/metal-block/Anti%20Aircraft%20Cannon-18363-Free-Loops.com.mp3");
 
 let cannonTop = new Image();
@@ -10,9 +18,6 @@ cannonTop.onload = renderImages;
 let mousePos = null;
 let angle = null;
 let canShoot = true;
-
-
-
 
 //Global Functions
 function drawBorder() {
@@ -86,17 +91,17 @@ class Cannon {
 let cannon = new Cannon(80,580);
 
 class CannonBall {
-    constructor(angle, x, y) {
-        this.radius = 15;
-        this.mass = this.radius;
+    constructor(angle, x, y, radius, mass, gravity, elasticity, friction, speed) {
+        this.radius = radius;
+        this.mass = mass;
         this.angle = angle;
         this.x = x;
         this.y = y;
-        this.dx = Math.cos(angle) * 7;
-        this.dy = Math.sin(angle) * 7;
-        this.gravity = 0.05;
-        this.elasticity = 0.5;
-        this.friction = 0.008;
+        this.dx = Math.cos(angle) * speed;
+        this.dy = Math.sin(angle) * speed;
+        this.gravity = gravity;
+        this.elasticity = elasticity;
+        this.friction = friction;
         this.collAudio = new Audio("https://archive.org/download/metal-block_202104/metal-block.wav");
         this.collAudio.volume = 0.7;
         this.shouldAudio = true;
@@ -110,8 +115,9 @@ class CannonBall {
             this.dy += this.gravity;
         } 
 
-        //Apply friction to X axis
+        
         this.dx = this.dx - (this.dx*this.friction);
+        this.dy = this.dy - (this.dy*this.friction);
 
         this.x += this.dx; 
         this.y += this.dy; 
@@ -258,8 +264,15 @@ canvas.addEventListener("click", e => {
 
     let ballPos = sortBallPos(cannon.topX + 100, cannon.topY + 30);
 
+    let radius = parseFloat(cannonRadiusInput.value);
+    let mass = parseFloat(massInput.value);
+    let gravity = parseFloat(gravityInput.value);
+    let elasticity = parseFloat(elasticityInput.value);
+    let friction = parseFloat(frictionInput.value);
+    let speed = parseFloat(cannonPowerInput.value);
+
     cannonBalls.push( 
-        new CannonBall(angle, ballPos.x, ballPos.y)
+        new CannonBall(angle, ballPos.x, ballPos.y, radius, mass, gravity, elasticity, friction, speed)
         );
     
     cannonSfx.currentTime = 0.2;
@@ -270,3 +283,7 @@ canvas.addEventListener("click", e => {
         canShoot = true;
     }, 1000)
 })
+
+clearButton.addEventListener("click", () => {
+    cannonBalls = [];
+});
