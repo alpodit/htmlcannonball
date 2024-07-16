@@ -10,7 +10,7 @@ const cannonRadiusInput = document.getElementById('cannon-radius');
 const clearButton = document.getElementById('clear');
 
 let cannonSfx = new Audio("https://ia601404.us.archive.org/24/items/metal-block/Anti%20Aircraft%20Cannon-18363-Free-Loops.com.mp3");
-
+cannonSfx.volume = 0.1
 let cannonTop = new Image();
 cannonTop.src="https://ia801504.us.archive.org/32/items/cannon_202104/cannon.png";
 cannonTop.onload = renderImages;
